@@ -1,0 +1,13 @@
+{
+	"coord":
+	{"lon":77.33,"lat":28.52},
+	"weather":[{"id":721,"main":"Haze","description":"haze","icon":"50d"}],
+	"base":"stations",
+	"main":{"temp":307.15,"pressure":1009,"humidity":24,"temp_min":307.15,"temp_max":307.15},
+	"visibility":5000,
+	"wind":{"speed":4.1,"deg":320,"gust":9.3},
+	"clouds":{"all":20},
+	"dt":1490355000,
+	"sys":{"type":1,"id":7809,"message":0.003,"country":"IN","sunrise":1490316572,"sunset":1490360667},
+	"id":1278007,"name":"Badarpur","cod":200
+}
