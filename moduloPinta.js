@@ -1,13 +1,13 @@
 'use strict';
 
-var App = {
+let App = {
 
 	host: function() {
 		return 'api.openweathermap.org';
 	},
 
 	path: function(item) {
-		return '/data/2.5/weather?q='+ item +'&APPID=56113ea64fd73fb989bcfdd636c050f0';
+		return '/data/2.5/weather?q='+ item +'&units=metric&APPID=56113ea64fd73fb989bcfdd636c050f0';
 	},
 
     pinta: function (something) {
@@ -33,7 +33,7 @@ var App = {
 
 	    return 0;
 	} 
-}
+};
 
 module.exports = App;
 

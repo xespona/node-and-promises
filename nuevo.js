@@ -1,10 +1,10 @@
-var http = require('http');
-var myModule = require('./moduloPinta');
-require('promise-first')
+const http = require('http');
+const myModule = require('./moduloPinta');
+require('promise-first');
 
-var cities = process.argv.slice(2);
-var length = cities.length;
-var count = 0;
+const cities = process.argv.slice(2);
+const length = cities.length;
+
 
 if (length <= 0) {
     console.log('city is mandatory!!');
@@ -14,10 +14,11 @@ if (length <= 0) {
 const temperatureNotFound = 'not found';
 
 const getTemperatura = function (options, cityName) {
-    return new Promise((resolve, reject) => {
+    console.log(options);
+    return new Promise((resolve) => {
 
         // setTimeout(() => resolve({ temp: '4000', name: 'Atrapalo is HOT' }), 2000);
-
+        let myJson = {};
         let req = http.request(options, (response) => {
             // handle http errors
             if (response.statusCode < 200 || response.statusCode > 299) {
@@ -33,8 +34,8 @@ const getTemperatura = function (options, cityName) {
 
             // we are done, resolve promise with those joined chunks
             response.on('end', () => {
+                myJson = JSON.parse(str);
                 try {
-                    var myJson = JSON.parse(str);
                     // put the responses in an array
                     resolve({ temp: myJson.main.temp, name: myJson.name });
                 } catch(e) {
@@ -44,14 +45,15 @@ const getTemperatura = function (options, cityName) {
         });
 
         // handle connection errors of the request
-        req.on('error', (err) => resolve({ temp: temperatureNotFound, name: myJson.name }))
+        req.on('error', () => resolve({ temp: temperatureNotFound, name: myJson.name }));
         req.end();
     });
-}
+};
 
-var promises = [];
-cities.forEach(function (item, idx, array) {
-    var options = {
+const promises = [];
+cities.forEach(function (item) {
+    const options = {
+        units: 'metric',
         host: myModule.host(),
         path: myModule.path(item),
     };
@@ -60,20 +62,20 @@ cities.forEach(function (item, idx, array) {
 });
 
 
-// Promise.all(promises)
-// .then(values => { 
-//     var values = myModule.ordena(values);
-//     myModule.pinta(values);
-// }).catch(reason => { 
-//     console.log("he cascao por: "+reason);
-// });
-
-Promise.first(promises, 3)
-.then(values => { 
-    var values = myModule.ordena(values);
-    myModule.pinta(values);
-}).catch(reason => { 
+Promise.all(promises)
+.then(values => {
+    let myValues = myModule.ordena(values);
+    myModule.pinta(myValues);
+}).catch(reason => {
     console.log("he cascao por: "+reason);
 });
+
+// Promise.first(promises, 3)
+// .then(values => {
+//     var values = myModule.ordena(values);
+//     myModule.pinta(values);
+// }).catch(reason => {
+//     console.log("he cascao por: "+reason);
+// });
 
 

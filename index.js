@@ -1,23 +1,23 @@
-var http = require('http');
-var myModule = require('./moduloPinta');
+// TODO: this is mierder, use nuevo.js
+const http = require('http');
+const myModule = require('./moduloPinta');
 
 
-var cities = process.argv.slice(2);
-var promises = [];
+const cities = process.argv.slice(2);
+const promises = [];
 if (cities.length <= 0) {
     console.log('city is mandatory!!');
     return;
 }
 
-var length = cities.length;
-var count = 0;
+const length = cities.length;
+let count = 0;
 
 
-
-var responses = [];
+const responses = [];
 callback = function(response) {
     count++
-    var str = '';
+    let str = '';
 
     //another chunk of data has been recieved, so append it to `str`
     response.on('data', function (chunk) {
@@ -26,7 +26,7 @@ callback = function(response) {
 
     //the whole response has been recieved, so we just print it out here
     response.on('end', function () {
-        var myJson = JSON.parse(str);
+        const myJson = JSON.parse(str);
         // put the responses in an array
         responses.push({ temp: myJson.main.temp, name: myJson.name });
 
@@ -38,7 +38,8 @@ callback = function(response) {
 }
 
 cities.forEach(function (item, idx, array) {
-    var options = {
+    const options = {
+
         host: myModule.host(),
         path: myModule.path(item),
     };
@@ -55,7 +56,8 @@ cities.forEach(function (item, idx, array) {
         });
     });
 
-    promises.push(new Promise(resolve, reject) => {
+    promises.push(new Promise((resolve, reject) => {
         http.request(options, callback).end();
-    });
+    }
+)
 });
